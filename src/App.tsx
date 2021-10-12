@@ -1,26 +1,69 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
-function App() {
+import Movies from './components/Movies';
+import Home from './components/Home';
+import Admin from './components/Admin';
+import Genres from './components/Genres';
+import OneMovie from './components/OneMovie';
+import OneGenre from './components/OneGenre';
+import EditMovie from './components/EditMovie';
+
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="contianer-md p-5">
+        <div className="row">
+          <h1 className="mt-3">
+            Sky Movies
+          </h1>
+          <hr className="mb-3"></hr>
+        </div>
+
+        <div className="row">
+          <div className="col-md-2">
+            <nav>
+              <ul className="list-group">
+                <li className="list-group-item">
+                  <Link to="/">Home</Link>
+                </li>
+                <li className="list-group-item">
+                  <Link to="/movies">Movies</Link>
+                </li>
+                <li className="list-group-item">
+                  <Link to="/genres">Genres</Link>
+                </li>
+                <li className="list-group-item">
+                  <Link to="/admin/movie/0">Add Movie</Link>
+                </li>
+                <li className="list-group-item">
+                  <Link to="/admin">Manage Catalog</Link>
+                </li>
+              </ul>
+            </nav>
+          </div>
+
+          <div className="col-md-10">
+            <Switch>
+              {/* Nested Routing */}
+              <Route path="/movies/:id" component={OneMovie} />
+              <Route path="/movies">
+                <Movies />
+              </Route>
+              <Route path="/genre/:id" component={OneGenre} />
+              <Route exact path="/genres">
+                <Genres />
+              </Route>
+              <Route exact path="/admin/movie/:id" component={EditMovie} />
+              <Route path="/admin">
+                <Admin />
+              </Route>
+              <Route path="/">
+                <Home />
+              </Route>
+            </Switch>
+          </div>
+        </div>
+      </div>
+    </Router >
   );
 }
-
-export default App;
