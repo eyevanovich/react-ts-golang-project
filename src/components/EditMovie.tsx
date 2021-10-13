@@ -99,7 +99,6 @@ const EditMovie: FC<RouteComponentProps<EditState>> = (props) => {
     const handleChange = (evt: React.ChangeEvent<HTMLInputElement>
         | React.ChangeEvent<HTMLSelectElement>
         | React.ChangeEvent<HTMLTextAreaElement>): void => {
-        console.log("Change handled")
         let value: string = evt.target.value;
         let name: string = evt.target.name;
         setMovie((prevState: Movie) => ({
@@ -226,7 +225,7 @@ const EditMovie: FC<RouteComponentProps<EditState>> = (props) => {
                         type={'date'}
                         name={'release_date'}
                         id={'release_date'}
-                        placeholder=""
+                        placeholder={""}
                         value={movie.release_date}
                         handleChange={handleChange}
                         className={""}
@@ -240,7 +239,7 @@ const EditMovie: FC<RouteComponentProps<EditState>> = (props) => {
                         type={'number'}
                         name={'runtime'}
                         id={'runtime'}
-                        placeholder=""
+                        placeholder={""}
                         value={movie.runtime}
                         handleChange={handleChange}
                         errorDiv={hasError("runtime") ? "text-danger" : "d-none"}

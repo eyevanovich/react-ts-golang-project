@@ -1,3 +1,5 @@
+import { RouteComponentProps } from 'react-router'
+
 interface Movie {
     id: number;
     title: string;
@@ -52,6 +54,27 @@ interface AlertProps {
     alertMessage: string
 }
 
+interface Token {
+    jwt: string
+}
+
+interface User {
+    email: Email
+    password: Password
+}
+
+interface Email {
+    email: string
+}
+
+interface Password {
+    password: string
+}
+
+interface LoginProps extends RouteComponentProps {
+    handleJwtChange: any
+}
+
 export type {
     Movie,
     Genre,
@@ -59,5 +82,11 @@ export type {
     GenreProps,
     SelectProps,
     MPAAOptions,
-    AlertProps
+    AlertProps,
+    Token,
+    Password,
+    Email,
+    User,
+    LoginProps
 }
+
