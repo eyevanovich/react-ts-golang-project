@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect, Fragment } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Link } from 'react-router-dom';
-import { AlertProps, Movie } from './Interfaces'
+import { AlertProps, TokenProps, Movie, EditState } from './Interfaces'
 import './EditMovie.css';
 import Input from './form-components/Input';
 import TextArea from './form-components/TextArea';
@@ -11,11 +11,7 @@ import Alert from "./ui-components/Alert";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
-type EditState = {
-    id: string
-}
-
-const EditMovie: FC<RouteComponentProps<EditState>> = (props) => {
+const EditMovie: FC<RouteComponentProps<EditState> & TokenProps> = (props) => {
 
     let initMovie: Movie = {
         title: "",
@@ -69,11 +65,15 @@ const EditMovie: FC<RouteComponentProps<EditState>> = (props) => {
 
         const data = new FormData(evt.target)
         const payload = Object.fromEntries(data.entries());
+        const headers = new Headers();
+        headers.append("Content-Type", "application/json");
+        headers.append("Authorization", "Bearer " + props.token.jwt);
 
         const requestOptions = {
             method: 'POST',
-            body: JSON.stringify(payload)
-        }
+            body: JSON.stringify(payload),
+            headers: headers
+        };
 
         fetch('http://localhost:4000/v1/admin/editmovie', requestOptions)
             .then(response => response.json())
@@ -88,13 +88,14 @@ const EditMovie: FC<RouteComponentProps<EditState>> = (props) => {
                     props.history.push({
                         pathname: "/admin",
                     })
+
                 }
-            })
+            });
     };
 
     const hasError = (key: string) => {
         return errors.indexOf(key) !== -1;
-    }
+    };
 
     const handleChange = (evt: React.ChangeEvent<HTMLInputElement>
         | React.ChangeEvent<HTMLSelectElement>
@@ -104,10 +105,16 @@ const EditMovie: FC<RouteComponentProps<EditState>> = (props) => {
         setMovie((prevState: Movie) => ({
             ...prevState,
             [name]: value,
-        }))
-    }
+        }));
+    };
 
     const componentDidMount = () => {
+        if (props.token.jwt === "") {
+            props.history.push({
+                pathname: "/login",
+            });
+            return;
+        }
         // API fetch call to go backend
         const id = props.match.params.id;
         if (Number(id) > 0) {
@@ -148,7 +155,7 @@ const EditMovie: FC<RouteComponentProps<EditState>> = (props) => {
         }
     };
 
-    useEffect(componentDidMount, [props.match.params.id]);
+    useEffect(componentDidMount, [props.match.params.id, props.token, props.history]);
 
     const confirmDelete = () => {
         confirmAlert({
@@ -177,7 +184,7 @@ const EditMovie: FC<RouteComponentProps<EditState>> = (props) => {
                 },
                 {
                     label: 'No',
-                    onClick: () => {}
+                    onClick: () => { }
                 }
             ]
         });

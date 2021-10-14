@@ -72,7 +72,15 @@ interface Password {
 }
 
 interface LoginProps extends RouteComponentProps {
-    handleJwtChange: any
+    handleJwtChange: (jwt: string) => void
+}
+
+interface TokenProps extends RouteComponentProps {
+    token: Token
+}
+
+type EditState = {
+    id: string
 }
 
 export type {
@@ -87,6 +95,8 @@ export type {
     Password,
     Email,
     User,
-    LoginProps
+    LoginProps,
+    TokenProps,
+    EditState
 }
 

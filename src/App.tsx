@@ -7,9 +7,10 @@ import Genres from './components/Genres';
 import OneMovie from './components/OneMovie';
 import OneGenre from './components/OneGenre';
 import EditMovie from './components/EditMovie';
-import { LoginProps, Token } from './components/Interfaces';
+import { LoginProps, Token, TokenProps, EditState } from './components/Interfaces';
 import React, { FC, useState, Fragment } from 'react';
 import Login from './components/Login';
+import { RouteComponentProps } from 'react-router'
 
 const App: FC = (props) => {
   const [jwt, setJwt] = useState<Token>({ jwt: "" })
@@ -85,11 +86,18 @@ const App: FC = (props) => {
               <Route exact path="/genres">
                 <Genres />
               </Route>
-              <Route exact path="/admin/movie/:id" component={EditMovie} />
-              <Route path="/admin">
-                <Admin />
-              </Route>
-              <Route exact path="/login" component={(props: LoginProps) => <Login {...props} handleJwtChange={handleJwtChange} />} />
+              <Route exact path="/admin/movie/:id"
+                component={
+                  (props: RouteComponentProps<EditState> & TokenProps) =>
+                    <EditMovie {...props} token={jwt} />
+                }
+              />
+              <Route path="/admin" component={(props: TokenProps) =>
+                <Admin {...props} token={jwt} />
+              }
+              />
+              <Route exact path="/login" component={(props: LoginProps) =>
+                <Login {...props} handleJwtChange={handleJwtChange} />} />
               <Route path="/">
                 <Home />
               </Route>

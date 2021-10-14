@@ -1,8 +1,15 @@
 import React, { FC, Fragment, useState, useEffect } from "react";
 import { Link } from 'react-router-dom'
-import { Movie } from "./Interfaces";
+import { Movie, TokenProps } from "./Interfaces";
 
-const Admin: FC = (props) => {
+const Admin: FC<TokenProps> = (props) => {
+
+        if(props.token.jwt === ""){
+            props.history.push({
+                pathname: "/login"
+            })
+        }
+        
         // state for movies
         const [movies, setMovies] = useState<Movie[]>([])
         // state for if data is loaded or not (default false)

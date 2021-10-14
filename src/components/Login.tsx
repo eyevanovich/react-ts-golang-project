@@ -57,7 +57,6 @@ const Login: FC<LoginProps> = (props) => {
                             alertMessage: data.error.message
                         });
                 } else {
-                    console.log(data);
                     handleJwtChange(data.response);
                     props.history.push({
                         pathname: "/admin",
