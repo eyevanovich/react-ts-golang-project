@@ -154,14 +154,15 @@ func (app *application) editMovie(rw http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (app *application) searchMovie(rw http.ResponseWriter, r *http.Request) {
+// func (app *application) searchMovie(rw http.ResponseWriter, r *http.Request) {
 
-}
+// }
 
 func (app *application) deleteMovie(rw http.ResponseWriter, r *http.Request) {
-	params := httprouter.ParamsFromContext(r.Context())
-
-	id, err := strconv.Atoi(params.ByName("id"))
+	// This should work but it doesn't
+	// params := httprouter.ParamsFromContext(r.Context())
+	params := r.Context().Value("params")
+	id, err := strconv.Atoi(params.(httprouter.Params).ByName("id"))
 	if err != nil {
 		app.logger.Println(err.Error())
 		app.errorJSON(rw, err)

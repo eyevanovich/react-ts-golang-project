@@ -8,7 +8,7 @@ import OneMovie from './components/OneMovie';
 import OneGenre from './components/OneGenre';
 import EditMovie from './components/EditMovie';
 import { LoginProps, Token, TokenProps, EditState } from './components/Interfaces';
-import React, { FC, useState, Fragment } from 'react';
+import React, { FC, useState, Fragment, useEffect } from 'react';
 import Login from './components/Login';
 import { RouteComponentProps } from 'react-router'
 
@@ -21,7 +21,19 @@ const App: FC = (props) => {
 
   const logout = () => {
     setJwt({ jwt: "" });
+    window.localStorage.removeItem("jwt");
   }
+
+  const componentDidMount = () => {
+    let t = window.localStorage.getItem("jwt")
+    if (t) {
+      if(jwt.jwt === ""){
+        setJwt(JSON.parse(t))
+      }
+    }
+  }
+
+  useEffect(componentDidMount,[jwt.jwt]);
 
   let loginLink;
   if (jwt.jwt === "") {

@@ -58,6 +58,8 @@ const Login: FC<LoginProps> = (props) => {
                         });
                 } else {
                     handleJwtChange(data.response);
+                    // Save JWT to local storage
+                    window.localStorage.setItem("jwt", JSON.stringify(data.response))
                     props.history.push({
                         pathname: "/admin",
                     })

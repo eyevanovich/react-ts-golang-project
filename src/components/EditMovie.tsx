@@ -165,7 +165,15 @@ const EditMovie: FC<RouteComponentProps<EditState> & TokenProps> = (props) => {
                 {
                     label: 'Yes',
                     onClick: () => {
-                        fetch("http://localhost:4000/v1/admin/deletemovie/" + movie.id, { method: "GET" })
+                        const headers = new Headers();
+                        headers.append("Content-Type", "application/json");
+                        headers.append("Authorization", "Bearer " + props.token.jwt);
+
+                        fetch("http://localhost:4000/v1/admin/deletemovie/" + movie.id,
+                            {
+                                method: "GET",
+                                headers: headers
+                            })
                             .then(response => response.json())
                             .then(data => {
                                 if (data.error) {

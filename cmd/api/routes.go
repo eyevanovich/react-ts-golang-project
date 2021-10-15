@@ -8,6 +8,8 @@ import (
 	"github.com/justinas/alice"
 )
 
+type params struct{}
+
 func (app *application) wrap(next http.Handler) httprouter.Handle {
 	return func(rw http.ResponseWriter, r *http.Request, p httprouter.Params) {
 		ctx := context.WithValue(r.Context(), "params", p)
@@ -28,7 +30,8 @@ func (app *application) routes() http.Handler {
 
 	router.HandlerFunc(http.MethodGet, "/v1/genres", app.getAllGenres)
 
-	router.HandlerFunc(http.MethodGet, "/v1/admin/deletemovie/:id", app.deleteMovie)
+	router.GET("/v1/admin/deletemovie/:id", app.wrap(secure.ThenFunc(app.deleteMovie)))
+	// router.HandlerFunc(http.MethodGet, "/v1/admin/deletemovie/:id", app.deleteMovie)
 
 	// POST Methods
 	// router.HandlerFunc(http.MethodPost, "	", app.editMovie)
