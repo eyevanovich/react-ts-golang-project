@@ -11,6 +11,8 @@ import { LoginProps, Token, TokenProps, EditState } from './components/Interface
 import React, { FC, useState, Fragment, useEffect } from 'react';
 import Login from './components/Login';
 import { RouteComponentProps } from 'react-router'
+import GraphQL from './components/GraphQL';
+import OneMovieGraphQL from './components/OneMovieGraphQL';
 
 const App: FC = (props) => {
   const [jwt, setJwt] = useState<Token>({ jwt: "" })
@@ -70,7 +72,7 @@ const App: FC = (props) => {
                 <li className="list-group-item">
                   <Link to="/genres">Genres</Link>
                 </li>
-                {jwt.jwt !== "" && <Fragment>
+                {jwt.jwt !== "" && (<Fragment>
                   <li className="list-group-item">
                     <Link to="/admin/movie/0">Add Movie</Link>
                   </li>
@@ -79,7 +81,10 @@ const App: FC = (props) => {
                     <Link to="/admin">Manage Catalog</Link>
                   </li>
                 </Fragment>
-                }
+                )}
+                <li className="list-group-item">
+                  <Link to="/graphql">GraphQL</Link>
+                </li>
               </ul>
               <pre>
                 {JSON.stringify(jwt, null, 3)}
@@ -90,26 +95,48 @@ const App: FC = (props) => {
           <div className="col-md-10">
             <Switch>
               {/* Nested Routing */}
+              {/* Single Movie Route*/}
               <Route path="/movies/:id" component={OneMovie} />
+              <Route path="/movies-graphql/:id" component={OneMovieGraphQL} />
+              
+              {/* All Movies Route */}
               <Route path="/movies">
                 <Movies />
               </Route>
+              
+              {/* Single Genre Route */}
               <Route path="/genre/:id" component={OneGenre} />
+              
+              {/* All Genrese Route */}
               <Route exact path="/genres">
                 <Genres />
               </Route>
+              
+              {/* Admin Movie Route */}
               <Route exact path="/admin/movie/:id"
                 component={
                   (props: RouteComponentProps<EditState> & TokenProps) =>
                     <EditMovie {...props} token={jwt} />
                 }
               />
+              
+              {/* Admin Route */}
               <Route path="/admin" component={(props: TokenProps) =>
-                <Admin {...props} token={jwt} />
-              }
+                <Admin {...props} token={jwt} />}
               />
+              
+              {/* Login Route */}
               <Route exact path="/login" component={(props: LoginProps) =>
-                <Login {...props} handleJwtChange={handleJwtChange} />} />
+                <Login {...props} handleJwtChange={handleJwtChange} />}
+              />
+              
+              {/* GraphQL Route */}
+              <Route exact path="/graphql">
+                <GraphQL/>
+              </Route>
+              
+              {/* DO NOT PUT OTHER ROUTES BELOW HOME ROUTE */}
+              {/* Home Route */}
               <Route path="/">
                 <Home />
               </Route>

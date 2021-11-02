@@ -10,6 +10,7 @@ interface Movie {
     rating: number;
     mpaa_rating: string;
     genres: string
+    poster?: any
 }
 
 interface Genre {

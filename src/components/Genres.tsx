@@ -29,9 +29,8 @@ const Genres: FC = (props) => {
             });
     };
 
-    useEffect(() => {
-        componentDidMount()
-    }, []);
+    useEffect(() => {componentDidMount()}, []);
+    
     if (error) {
         return <div>Error: {error.message}</div>
     } else if (!isLoaded) {

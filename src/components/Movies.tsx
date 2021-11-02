@@ -1,5 +1,5 @@
 import React, { FC, Fragment, useState, useEffect } from "react";
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import { Movie } from "./Interfaces";
 
 const Movies: FC = (props) => {
@@ -25,10 +25,10 @@ const Movies: FC = (props) => {
                 setMovies(json.movies);
                 setIsLoaded(true);
             },
-                (error) => {
-                    setIsLoaded(true);
-                    setError(error);
-                });
+            (error) => {
+                setIsLoaded(true);
+                setError(error);
+            });
     };
     useEffect(() => {
         componentDidMount()
