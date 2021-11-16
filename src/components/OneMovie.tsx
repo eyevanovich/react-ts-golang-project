@@ -15,7 +15,7 @@ const OneMovie: FC<RouteComponentProps<MovieProps>> = (props) => {
 
     const componentDidMount = () => {
         // API fetch call to go backend
-        fetch("http://localhost:4000/v1/movie/" + props.match.params.id)
+        fetch(`${process.env.REACT_APP_API_URL}/v1/movie/` + props.match.params.id)
             .then((response) => {
                 console.log("status code is", response.status)
                 if (response.status !== 200) {

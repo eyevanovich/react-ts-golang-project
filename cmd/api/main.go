@@ -11,6 +11,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
 
@@ -42,13 +43,20 @@ type application struct {
 func main() {
 	var cfg config
 
+	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
+
 	flag.IntVar(&cfg.port, "port", 4000, "Server port to listen on")
 	flag.StringVar(&cfg.env, "env", "development", "Application Environment (development | production")
 	flag.StringVar(&cfg.db.dsn, "dsn", "postgres://ipiesh@localhost/go_movies?sslmode=disable", "Postgres connection string")
-	flag.StringVar(&cfg.jwt.secret, "jwt-secret", "2dce505d96a53c5768052ee90f3df2055657518dad489160df9913f66042e160", "secret")
 	flag.Parse()
 
-	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
+	// read JWT secret from env
+	err := godotenv.Load(".env")
+	if err != nil {
+		logger.Fatal("Error loading .env file")
+	}
+
+	cfg.jwt.secret = os.Getenv("GO_MOVIES_JWT")
 
 	db, err := openDb(cfg)
 	if err != nil {

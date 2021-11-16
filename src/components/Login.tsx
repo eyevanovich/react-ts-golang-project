@@ -47,7 +47,7 @@ const Login: FC<LoginProps> = (props) => {
             body: JSON.stringify(payload)
         }
 
-        fetch('http://localhost:4000/v1/signin', requestOptions)
+        fetch(`${process.env.REACT_APP_API_URL}/v1/signin`, requestOptions)
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
@@ -58,8 +58,17 @@ const Login: FC<LoginProps> = (props) => {
                         });
                 } else {
                     handleJwtChange(data.response);
-                    // Save JWT to local storage
-                    window.localStorage.setItem("jwt", JSON.stringify(data.response))
+                    let date = new Date();
+                    let expDays = 1;
+                    date.setTime(date.getTime() + (expDays * 24 * 60 * 60 * 1000));
+                    const expires = "expires=" + date.toUTCString();
+       
+                    // set the cookie
+                    document.cookie =  "jwt="
+                        + JSON.stringify(data.response)
+                        + "; "
+                        + expires
+                        + "; path=/; SameSite=Strict; Secure;";
                     props.history.push({
                         pathname: "/admin",
                     })

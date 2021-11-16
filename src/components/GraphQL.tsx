@@ -38,7 +38,7 @@ const GraphQL: FC = (props) => {
             headers: myHeaders,
         }
 
-        fetch("http://localhost:4000/v1/graphql", requestOptions)
+        fetch(`${process.env.REACT_APP_API_URL}/v1/graphql`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
                 let theList: Movie[] = Object.values(data.data.list);
@@ -56,7 +56,12 @@ const GraphQL: FC = (props) => {
         | React.ChangeEvent<HTMLTextAreaElement>) => {
         let value = evt.target.value;
         setSearchTerm(value);
-        performSearch();
+        if (value.length > 2){
+            performSearch();
+        }
+        else{
+            setMovies([])
+        }
     }
 
     function performSearch() {
@@ -80,7 +85,7 @@ const GraphQL: FC = (props) => {
             headers: myHeaders,
         }
 
-        fetch("http://localhost:4000/v1/graphql", requestOptions)
+        fetch(`${process.env.REACT_APP_API_URL}/v1/graphql`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
                 let theList: Movie[] = Object.values(data.data.search);

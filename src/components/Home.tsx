@@ -9,9 +9,8 @@ const Home: FC = (props) => {
             <hr />
             {/* image import way 1 */}
             <img src={Ticket} alt="movie ticket" />
-            <hr />
             {/* image import way 2 from CSS */}
-            <div className="tickets"></div>
+            {/* <div className="tickets"></div> */}
         </div>
     )
 }

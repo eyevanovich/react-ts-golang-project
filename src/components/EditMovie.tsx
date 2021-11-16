@@ -75,7 +75,7 @@ const EditMovie: FC<RouteComponentProps<EditState> & TokenProps> = (props) => {
             headers: headers
         };
 
-        fetch('http://localhost:4000/v1/admin/editmovie', requestOptions)
+        fetch(`${process.env.REACT_APP_API_URL}/v1/admin/editmovie`, requestOptions)
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
@@ -118,7 +118,7 @@ const EditMovie: FC<RouteComponentProps<EditState> & TokenProps> = (props) => {
         // API fetch call to go backend
         const id = props.match.params.id;
         if (Number(id) > 0) {
-            fetch("http://localhost:4000/v1/movie/" + id)
+            fetch(`${process.env.REACT_APP_API_URL}/v1/movie/` + id)
                 .then((response) => {
                     console.log("status code is", response.status)
                     if (response.status !== 200) {
@@ -169,7 +169,7 @@ const EditMovie: FC<RouteComponentProps<EditState> & TokenProps> = (props) => {
                         headers.append("Content-Type", "application/json");
                         headers.append("Authorization", "Bearer " + props.token.jwt);
 
-                        fetch("http://localhost:4000/v1/admin/deletemovie/" + movie.id,
+                        fetch(`${process.env.REACT_APP_API_URL}/v1/admin/deletemovie/` + movie.id,
                             {
                                 method: "GET",
                                 headers: headers

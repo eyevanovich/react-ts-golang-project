@@ -21,17 +21,37 @@ const App: FC = (props) => {
     setJwt({ jwt: jwt });
   }
 
+  // get cookie returns the cookie value if it exists, or null if it's empty
+  const getCookie = (name: string) => {
+    let dc = document.cookie;
+    let end = 0;
+    let prefix = name + "=";
+    let begin = dc.indexOf("; " + prefix);
+    if (begin === -1) {
+        begin = dc.indexOf(prefix);
+        if (begin !== 0) return null;
+    } else {
+        begin += 2;
+        end = document.cookie.indexOf(";", begin);
+        if (end === -1) {
+            end = dc.length;
+        }
+    }
+    return decodeURI(dc.substring(begin + prefix.length, end));
+  }
+
   const logout = () => {
+    document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     setJwt({ jwt: "" });
-    window.localStorage.removeItem("jwt");
   }
 
   const componentDidMount = () => {
-    let t = window.localStorage.getItem("jwt")
-    if (t) {
-      if(jwt.jwt === ""){
-        setJwt(JSON.parse(t))
-      }
+    let jwtCookie = getCookie("jwt")
+    if (jwtCookie) {
+        // there is a cookie, but check to see if the user is not already logged in
+        if (jwt.jwt === "") {
+            setJwt({jwt: JSON.parse(jwtCookie)});
+        }
     }
   }
 
@@ -39,9 +59,9 @@ const App: FC = (props) => {
 
   let loginLink;
   if (jwt.jwt === "") {
-    loginLink = <Link to="/login">Login</Link>
+    loginLink = <Link to="/login">LOGIN</Link>
   } else {
-    loginLink = <Link to="/logout" onClick={logout}>Logout</Link>
+    loginLink = <Link to="/logout" onClick={logout}>LOGOUT</Link>
   }
 
   return (
@@ -86,9 +106,6 @@ const App: FC = (props) => {
                   <Link to="/graphql">GraphQL</Link>
                 </li>
               </ul>
-              <pre>
-                {JSON.stringify(jwt, null, 3)}
-              </pre>
             </nav>
           </div>
 
